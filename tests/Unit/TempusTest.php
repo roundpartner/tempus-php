@@ -4,6 +4,10 @@ namespace Test\Unit;
 
 use RoundPartner\Tempus\Tempus;
 use \PHPUnit\Framework\TestCase;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 
 class TempusTest extends TestCase
 {
@@ -17,9 +21,31 @@ class TempusTest extends TestCase
         $this->instance = new Tempus();
     }
 
-    public function testGetsAToken()
+    /**
+     * @param int $userId
+     * @param string $scenario
+     * @param Response[] $responses
+     *
+     * @dataProvider \Test\Provider\ResponseProvider::getTokenSuccessfully()
+     */
+    public function testGetsAToken($userId, $scenario, $responses)
     {
-        $response = $this->instance->get();
+        $client = $this->getClientMock($responses);
+        $this->instance->setClient($client);
+        $response = $this->instance->get($userId, $scenario);
         $this->assertNotFalse($response);
+    }
+
+    /**
+     * @param Response[] $responses
+     *
+     * @return Client
+     */
+    protected function getClientMock($responses)
+    {
+        $mock = new MockHandler($responses);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+        return $client;
     }
 }

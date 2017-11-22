@@ -11,7 +11,13 @@ class Tempus extends RestClient
         ]);
     }
 
-    public function get()
+    /**
+     * @param int $userId
+     * @param string $scenario
+     *
+     * @return object
+     */
+    public function get($userId, $scenario)
     {
         $data = [
             'user_id' => 1,
