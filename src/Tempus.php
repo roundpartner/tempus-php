@@ -20,7 +20,7 @@ class Tempus extends RestClient
     public function get($userId, $scenario)
     {
         $data = [
-            'user_id' => $userId,
+            'user_id' => (string) $userId,
             'scenario' => $scenario,
         ];
         $response = $this->client->post('/', [
