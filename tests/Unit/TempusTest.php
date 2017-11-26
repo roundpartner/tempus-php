@@ -18,7 +18,7 @@ class TempusTest extends TestCase
 
     public function setUp()
     {
-        $this->instance = new Tempus();
+        $this->instance = new Tempus('http://0.0.0.0:7373');
     }
 
     /**

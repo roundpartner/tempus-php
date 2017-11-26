@@ -4,10 +4,10 @@ namespace RoundPartner\Tempus;
 
 class Tempus extends RestClient
 {
-    public function __construct()
+    public function __construct($baseUri)
     {
         parent::__construct([
-            'base_uri' => 'http://0.0.0.0:7373',
+            'base_uri' => $baseUri,
         ]);
     }
 
