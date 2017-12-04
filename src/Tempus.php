@@ -2,6 +2,7 @@
 
 namespace RoundPartner\Tempus;
 
+use GuzzleHttp\Exception\ClientException;
 use RoundPartner\Tempus\Entity\Token;
 
 class Tempus extends RestClient implements TempusInterface
@@ -41,11 +42,21 @@ class Tempus extends RestClient implements TempusInterface
      * @param int $userId
      *
      * @return Token
+     *
+     * @throws \Exception
      */
     public function validate($token, $userId)
     {
         $uri = sprintf('/%d/%s', $userId, $token);
-        $response = $this->client->get($uri);
+        try {
+            $response = $this->client->get($uri);
+        } catch (ClientException $exception) {
+            $response = $exception->getResponse();
+            if (404 === $response->getStatusCode()) {
+                return false;
+            }
+            throw $exception;
+        }
         $body = json_decode($response->getBody());
         $token = new Token();
         $token->user_id = $body->user_id;

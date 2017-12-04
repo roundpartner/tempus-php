@@ -37,4 +37,11 @@ class ResponseProvider
             [1, [new Response(200, [], '{"user_id":"1","scenario":"test","token":"BAa-gqpESzJMy6k-oxiokPk-oJ-sejqzgmdSQ0pHXdz3dwTg9wXImWT3_hBKyhgS"}')]],
         ];
     }
+
+    public static function tokenNotFound()
+    {
+        return [
+            [[new Response(404, [], '')]]
+        ];
+    }
 }

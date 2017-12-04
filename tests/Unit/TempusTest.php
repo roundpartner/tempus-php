@@ -68,10 +68,11 @@ class TempusTest extends TestCase
 
     /**
      * @param int $userId
-     * @param string $scenario
      * @param Response[] $responses
      *
      * @dataProvider \Test\Provider\ResponseProvider::validateReturnsToken()
+     *
+     * @throws \Exception
      */
     public function testValidateThatTokenIsValid($userId, $responses)
     {
@@ -79,6 +80,21 @@ class TempusTest extends TestCase
         $this->instance->setClient($client);
         $response = $this->instance->validate($userId, 'a_valid_token');
         $this->assertEquals($userId, $response->user_id);
+    }
+
+    /**
+     * @param Response[] $responses
+     *
+     * @dataProvider \Test\Provider\ResponseProvider::tokenNotFound()
+     *
+     * @throws \Exception
+     */
+    public function testValidateReturnsFalseWhenTokenIsNotFound($responses)
+    {
+        $client = $this->getClientMock($responses);
+        $this->instance->setClient($client);
+        $response = $this->instance->validate(1, 'a_valid_token');
+        $this->assertFalse($response);
     }
 
     /**
