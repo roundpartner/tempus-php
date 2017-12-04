@@ -67,6 +67,21 @@ class TempusTest extends TestCase
     }
 
     /**
+     * @param int $userId
+     * @param string $scenario
+     * @param Response[] $responses
+     *
+     * @dataProvider \Test\Provider\ResponseProvider::validateReturnsToken()
+     */
+    public function testValidateThatTokenIsValid($userId, $responses)
+    {
+        $client = $this->getClientMock($responses);
+        $this->instance->setClient($client);
+        $response = $this->instance->validate($userId, 'a_valid_token');
+        $this->assertEquals($userId, $response->user_id);
+    }
+
+    /**
      * @param Response[] $responses
      *
      * @return Client

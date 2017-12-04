@@ -35,4 +35,22 @@ class Tempus extends RestClient implements TempusInterface
         $token->token = $body->token;
         return $token;
     }
+
+    /**
+     * @param string $token
+     * @param int $userId
+     *
+     * @return Token
+     */
+    public function validate($token, $userId)
+    {
+        $uri = sprintf('/%d/%s', $userId, $token);
+        $response = $this->client->get($uri);
+        $body = json_decode($response->getBody());
+        $token = new Token();
+        $token->user_id = $body->user_id;
+        $token->scenario = $body->scenario;
+        $token->token = $body->token;
+        return $token;
+    }
 }

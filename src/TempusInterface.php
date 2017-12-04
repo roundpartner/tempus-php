@@ -11,4 +11,12 @@ interface TempusInterface
      * @return Token
      */
     public function get($userId, $scenario);
+
+    /**
+     * @param string $token
+     * @param int $userId
+     *
+     * @return Token
+     */
+    public function validate($token, $userId);
 }
