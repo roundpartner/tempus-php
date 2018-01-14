@@ -17,23 +17,22 @@ class Tempus extends RestClient implements TempusInterface
     /**
      * @param int $userId
      * @param string $scenario
+     * @param array $meta
      *
      * @return Token
      */
-    public function get($userId, $scenario)
+    public function get($userId, $scenario, $meta = [])
     {
         $data = [
             'user_id' => (string) $userId,
             'scenario' => $scenario,
+            'meta' => (object) $meta,
         ];
         $response = $this->client->post('/', [
             'json' => $data
         ]);
         $body = json_decode($response->getBody());
-        $token = new Token();
-        $token->user_id = $body->user_id;
-        $token->scenario = $body->scenario;
-        $token->token = $body->token;
+        $token = Token::factory($body);
         return $token;
     }
 
@@ -62,10 +61,7 @@ class Tempus extends RestClient implements TempusInterface
             throw $exception;
         }
         $body = json_decode($response->getBody());
-        $token = new Token();
-        $token->user_id = $body->user_id;
-        $token->scenario = $body->scenario;
-        $token->token = $body->token;
+        $token = Token::factory($body);
         return $token;
     }
 }

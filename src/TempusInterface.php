@@ -7,10 +7,11 @@ interface TempusInterface
     /**
      * @param int $userId
      * @param string $scenario
+     * @param array $meta
      *
      * @return Token
      */
-    public function get($userId, $scenario);
+    public function get($userId, $scenario, $meta = []);
 
     /**
      * @param string $token
